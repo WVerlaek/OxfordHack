@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onCameraLoaded(Camera camera) {
-//        camera.setDisplayOrientation(90);
+        camera.setDisplayOrientation(90);
         preview = new CameraPreview(this, camera);
         previewLayout.removeAllViews();
         previewLayout.addView(preview);

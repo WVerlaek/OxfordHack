@@ -12,13 +12,14 @@ app = Flask(__name__)
 
 Base = declarative_base()
 
-UPLOAD_FOLDER = './uploads'
+DIR = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = DIR + '/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(os.path.realpath(__file__)) + '/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DIR + '/test.db'
 db = SQLAlchemy(app)
 
 challenge_tag = db.Table('challenge_tag', db.Model.metadata,

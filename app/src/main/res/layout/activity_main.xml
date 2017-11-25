@@ -23,4 +23,16 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 
+    <TextView android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="A, B, C, D, E"
+        android:background="@color/colorWhite"
+        android:textColor="@color/black87"
+        android:textSize="18sp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
 </android.support.constraint.ConstraintLayout>

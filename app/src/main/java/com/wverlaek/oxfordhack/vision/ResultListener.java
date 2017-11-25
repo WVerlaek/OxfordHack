@@ -6,5 +6,5 @@ package com.wverlaek.oxfordhack.vision;
 
 public interface ResultListener {
     void onResult(VisionResult result);
-    void onError();
+    void onError(Exception e);
 }

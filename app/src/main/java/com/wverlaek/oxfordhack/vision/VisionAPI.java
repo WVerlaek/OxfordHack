@@ -44,7 +44,8 @@ public class VisionAPI implements IVisionAPI {
     @Override
     public void getTagsAsync(Context context, final Picture picture, final ResultListener listener) {
         new AsyncTask<Picture, Void, VisionResult>() {
-//            OkHttpClient client = new OkHttpClient();
+
+            private Exception exception = null;
 
             @Override
             protected VisionResult doInBackground(Picture... pictures) {
@@ -53,49 +54,19 @@ public class VisionAPI implements IVisionAPI {
                 try {
                     return new VisionResult(client.analyzeImage(new ByteArrayInputStream(pic.getData()), visualFeatures, details).tags);
                 } catch (VisionServiceException vse) {
+                    exception = vse;
                     Log.e(TAG, "Error while analyzing image", vse);
                 } catch (IOException e) {
+                    exception = e;
                     Log.e(TAG, "Error while analyzing image", e);
                 }
                 return null;
-
-//                final MediaType MEDIA_TYPE = MediaType.parse("image/jpeg");
-//
-//                String visualFeatures = "?visualFeatures=Tags";
-//
-//                RequestBody body = RequestBody.create(MEDIA_TYPE, picture.getData());
-//                Request request = new Request.Builder()
-//                        .url(uriBase + visualFeatures)
-//                        .addHeader("Content-Type", "application/octet-stream")
-//                        .addHeader("Ocp-Apim-Subscription-Key", subscriptionKey)
-//                        .post(body)
-//                        .build();
-//                try {
-//                    Response response = client.newCall(request).execute();
-//                    if (response.code() != 200) {
-//                        Log.e("VisionAPI", "Invalid response code: " + response.code() + ". Message: " + response.message());
-//                        return null;
-//                    }
-//                    String jsonString = response.body().string();
-//                    Gson gson = new Gson();
-//                    VisionAPIResponse apiResponse = gson.fromJson(jsonString, VisionAPIResponse.class);
-//
-////                    List<Tag> tags = new ArrayList<>();
-////                    for (String tag : apiResponse.description.tags) {
-////                        tags.add(new Tag(tag));
-////                    }
-//                    return new VisionResult(apiResponse.tags);
-//
-//                } catch (IOException ioE)  {
-//                    Log.e("VisionAPI", "API error", ioE);
-//                    return null;
-//                }
             }
 
             @Override
             protected void onPostExecute(VisionResult visionResult) {
                 if (visionResult == null) {
-                    listener.onError();
+                    listener.onError(exception);
                 } else {
                     listener.onResult(visionResult);
                 }

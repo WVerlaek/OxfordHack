@@ -9,5 +9,5 @@ import android.content.Context;
 public interface IServerAPI {
     void getChallengesAsync(Context context, GetResultListener listener);
 
-    void postChallengeAsync(Context context, PostResultListener listener);
+    void postChallengeAsync(Context context, Challenge challenge, PostResultListener listener);
 }

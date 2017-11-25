@@ -11,13 +11,12 @@ import java.util.List;
 public class Challenge {
     public int id;
     public String name;
-    public List<String> tags;
+    public String tag;
     public byte[] file;
 
-    Challenge(int id, String name, List<String> tags, byte[] file) {
-        this.id = id;
+    public Challenge(String name, String tag, byte[] file) {
         this.name = name;
-        this.tags = tags;
+        this.tag = tag;
         this.file = file;
     }
 

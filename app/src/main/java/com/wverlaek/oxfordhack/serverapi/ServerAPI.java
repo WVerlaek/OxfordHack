@@ -3,20 +3,20 @@ package com.wverlaek.oxfordhack.serverapi;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.wverlaek.oxfordhack.ui.activity.ChallengeSelectActivity;
+import com.wverlaek.oxfordhack.util.TextUtil;
 
 import java.io.IOException;
-import java.io.SyncFailedException;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -24,7 +24,9 @@ import okhttp3.Response;
  */
 
 public class ServerAPI implements IServerAPI {
-    private final String url = "http://178.62.27.128/get/all";
+    private final String getUrl = "http://178.62.27.128/get/all";
+    private final String postUrl = "http://178.62.27.128/upload";
+
     OkHttpClient client = new OkHttpClient();
 
     @SuppressLint("StaticFieldLeak")
@@ -32,12 +34,11 @@ public class ServerAPI implements IServerAPI {
     public void getChallengesAsync(Context context, GetResultListener listener) {
         new AsyncTask<Void, Void, List<Challenge>>() {
             private Exception exception = null;
-            private String json = null;
 
             @Override
             protected List<Challenge> doInBackground(Void... voids) {
                 Request request = new Request.Builder()
-                        .url(url)
+                        .url(getUrl)
                         .build();
 
                 try {
@@ -72,14 +73,48 @@ public class ServerAPI implements IServerAPI {
 
     @SuppressLint("StaticFieldLeak")
     @Override
-    public void postChallengeAsync(Context context, PostResultListener listener) {
+    public void postChallengeAsync(Context context, Challenge challenge, PostResultListener listener) {
         new AsyncTask<Challenge, Void, Void>() {
+            private Exception exception = null;
 
             @Override
             protected Void doInBackground(Challenge... challenges) {
                 Challenge challenge = challenges[0];
-                return null;
+
+                MediaType MEDIA_TYPE_PLAINTEXT = MediaType
+                        .parse("text/plain; charset=utf-8");
+
+                RequestBody formBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("file", "newfile.jpeg",
+                                RequestBody.create(MEDIA_TYPE_PLAINTEXT, challenge.file))
+                        .addFormDataPart("name", challenge.name)
+                        .addFormDataPart("tags", challenge.tag)
+                        .build();
+
+                Request request = new Request.Builder()
+                        .url(postUrl)
+                        .post(formBody)
+                        .build();
+
+                try (Response response = client.newCall(request).execute()) {
+                    if (!response.isSuccessful() || response.code() != 200) throw new IOException("Unexpected code " + response);
+                    return null;
+                } catch (IOException ioE) {
+                    exception = ioE;
+                    Log.e("ServerAPI", "Post request failed", ioE);
+                    return null;
+                }
             }
-        }.execute();
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                if (exception != null) {
+                    listener.onError(exception);
+                } else {
+                    listener.onSuccess();
+                }
+            }
+        }.execute(challenge);
     }
 }

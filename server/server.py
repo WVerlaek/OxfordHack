@@ -46,6 +46,7 @@ class Challenge(db.Model):
     def to_dict(self):
         return {'id': self.id,
                 # 'file': open(app.config['UPLOAD_FOLDER'] + '/' + self.picture),
+                'picture': self.picture,
                 'name': self.name,
                 'tags': list(map(lambda t: t.name, self.tags))}
 
@@ -97,6 +98,8 @@ def upload_challenge():
 
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
+            return json.dumps(chal.to_dict())
+
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -109,7 +112,23 @@ def upload_challenge():
     </form>
     '''
 
-@app.route("/get/<name>")
-def get_challange(name):
+@app.route("/get/all")
+def get_all():
+    chals = list(db.session.query(Challenge))
+    return json.dumps([chal.to_dict() for chal in chals])
+
+@app.route("/get/name/<name>")
+def get_name(name):
     chals = list(db.session.query(Challenge).filter(Challenge.name == name))
     return json.dumps([chal.to_dict() for chal in chals])
+
+@app.route("/get/id/<id>")
+def get_id(id):
+    chal = db.session.query(Challenge).filter(Challenge.id == id).first()
+    return json.dumps(chal.to_dict())
+
+@app.route("/get/picture/<id>")
+def get_picture(id):
+    chal = db.session.query(Challenge).filter(Challenge.id == id).first()
+    return open(app.config['UPLOAD_FOLDER'] + '/' + chal.picture, 'rb').read()
+    # return json.dumps([chal.to_dict() for chal in chals])

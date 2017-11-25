@@ -31,10 +31,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".ui.activity.ChallengeSelectActivity" />
-        <activity android:name=".ui.activity.ChallengeActivity" />
+        <activity android:name=".ui.activity.ChallengeItem" />
         <activity android:name=".ui.activity.SearchFinishedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
+
     </application>
 
 </manifest>

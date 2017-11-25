@@ -23,6 +23,7 @@ import com.wverlaek.oxfordhack.vision.Picture;
 import com.wverlaek.oxfordhack.vision.TagDetector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class SelectActivity extends AppCompatActivity {
     private LinearLayout tagsLayout;
     private LinearLayout selectedTagLayout;
     private TextView loadingText;
+    private TextView selectedTagNameTextView;
+    private TextView errorMessage;
 
     private Tag selectedTag;
     private Picture selectedPicture;
@@ -45,25 +48,22 @@ public class SelectActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle("Select your object");
+        setTitle("I spy with my little eye on...");
 
 
         previewLayout = findViewById(R.id.camera);
         tagsLayout = findViewById(R.id.tags_layout);
         selectedTagLayout = findViewById(R.id.selected_tag);
         loadingText = findViewById(R.id.loading_text);
+        selectedTagNameTextView = findViewById(R.id.selected_tag_name);
+        errorMessage = findViewById(R.id.error_message);
 
         tagDetector = new TagDetector(this, previewLayout);
 
         tagDetector.getDetectedTags().observe(this, this::handleResult);
         tagDetector.getError().observe(this, throwable -> {
-            if (throwable != null) {
-                // Whoops! An error occurred while trying to perform magic on your image. Please check your internet connection and try again.
-                // todo show an error message in UI
-                Log.e(TAG, "Error in tag detector", throwable);
-            } else {
-                // TODO hide error message
-            }
+            errorMessage.setVisibility(throwable == null ? View.GONE : View.VISIBLE);
+            Log.e(TAG, "Error in tag detector", throwable);
         });
 
         FloatingActionButton doneFab = findViewById(R.id.done_fab);
@@ -124,10 +124,16 @@ public class SelectActivity extends AppCompatActivity {
 
     }
 
+    // don't show these tags
+    private List<String> ignoredTags = Arrays.asList("abstract", "indoor", "sitting", "blur");
+
     private List<Tag> filterTags(List<Tag> tags, double minConfidence) {
         List<Tag> result = new ArrayList<>();
         if (tags != null) {
             for (Tag tag : tags) {
+                if (ignoredTags.contains(tag.name)) {
+                    continue;
+                }
                 if (tag.confidence >= minConfidence) {
                     result.add(tag);
                 }
@@ -139,6 +145,10 @@ public class SelectActivity extends AppCompatActivity {
     private void setSelectedTag(Tag tag, Picture picture) {
         this.selectedTag = tag;
         this.selectedPicture = picture;
+
+        if (tag != null) {
+            selectedTagNameTextView.setText(TextUtil.capitalizeFirstLetter(tag.name));
+        }
 
         selectedTagLayout.setVisibility(tag == null ? View.GONE : View.VISIBLE);
     }

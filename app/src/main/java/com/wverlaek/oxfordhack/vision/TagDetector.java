@@ -40,7 +40,7 @@ public class TagDetector {
     private MutableLiveData<Throwable> mutableError = new MutableLiveData<>();
 
     private Timer timer = null;
-    private static final int POLL_RATE = 4000; // 4 sec
+    private static final int POLL_RATE = 2000; // 4 sec
 
     private boolean takingPicture = false;
 
@@ -78,7 +78,7 @@ public class TagDetector {
             public void run() {
                 doAnalyze(context);
             }
-        }, POLL_RATE, POLL_RATE);
+        }, 500, POLL_RATE);
     }
 
     public LiveData<Pair<Picture, List<Tag>>> getDetectedTags() {
@@ -124,10 +124,6 @@ public class TagDetector {
 //            camera.stopPreview();
 //            camera.startPreview();
 //        });
-    }
-
-    public Picture debugGetPreviewPicture() {
-        return preview.getPreviewPicture();
     }
 
     @Nullable

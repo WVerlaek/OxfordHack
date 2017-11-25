@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -92,7 +93,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         this.previewBytes = bytes;//Arrays.copyOf(bytes, bytes.length);
     }
 
+    @Nullable
     public Picture getPreviewPicture() {
+        if (previewBytes == null) {
+            return null;
+        }
         Camera.Parameters p = mCamera.getParameters();
         int width = p.getPreviewSize().width;
         int height = p.getPreviewSize().height;

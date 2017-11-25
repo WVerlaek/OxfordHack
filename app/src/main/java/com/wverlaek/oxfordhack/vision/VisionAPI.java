@@ -28,7 +28,7 @@ public class VisionAPI implements IVisionAPI {
     private VisionServiceClient client;
 
     public VisionAPI() {
-        client = new VisionServiceRestClient(Constants.MS_VISION_API_KEY, apiRoot);
+        client = new VisionServiceRestClient(Constants.MS_VISION_API_KEY, Constants.MS_VISION_ENDPOINT);
     }
 
     @SuppressLint("StaticFieldLeak")

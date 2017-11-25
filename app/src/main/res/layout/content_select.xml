@@ -79,10 +79,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin">
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
         </LinearLayout>
     </HorizontalScrollView>
+
+    <TextView android:id="@+id/error_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_max="200dp"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black87"
+        android:background="@drawable/tag_bg"
+        android:text="Whoops! An error occurred while trying to perform magic on your image. Please check your internet connection and try again."/>
 
 </android.support.constraint.ConstraintLayout>

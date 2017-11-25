@@ -19,13 +19,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
-# class ChallengeTag(db.Model):
-    # # __tablename__ = ''
-    # challenge_id = db.Column(db.Integer, db.ForeignKey('challenge.id'), primary_key=True)
-    # tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), primary_key=True)
-    # # extra_data = Column(String(50))
-    # child = db.relationship("Tag")
-
 challenge_tag = db.Table('challenge_tag', db.Model.metadata,
     db.Column('challenge_id', db.Integer, db.ForeignKey('challenge.id')),
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
@@ -46,12 +39,6 @@ class Challenge(db.Model):
     tags = db.relationship("Tag",
         secondary=challenge_tag)
 
-
-    # tags = db.relationship('Tag', lazy=True)
-    # other_tags = db.relationship('tag', lazy=True)
-    # tags = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False)
-    # other_tags = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False)
-
     def __repr__(self):
         return '<Challenge {}>'.format(self.tags)
 
@@ -65,19 +52,6 @@ def get_or_create(model, defaults=None, **kwargs):
         instance = model(**params)
         db.session.add(instance)
         return instance, True
-# def get_db():
-#     """Opens a new database connection if there is none yet for the
-#     current application context.
-#     """
-#     if not hasattr(g, 'sqlite_db'):
-#         g.sqlite_db = connect_db()
-#     return g.sqlite_db
-
-# @app.teardown_appcontext
-# def close_db(error):
-#     """Closes the database again at the end of the request."""
-#     if hasattr(g, 'sqlite_db'):
-#         g.sqlite_db.close()
 
 @app.route("/")
 def hello():

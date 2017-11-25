@@ -31,7 +31,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".ui.activity.ChallengeSelectActivity" />
-        <activity android:name=".ui.activity.ChallengeActivity"></activity>
+        <activity android:name=".ui.activity.ChallengeItem"></activity>
     </application>
 
 </manifest>

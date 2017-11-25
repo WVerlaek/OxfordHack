@@ -16,21 +16,25 @@ public class Picture {
 
     private WeakReference<Bitmap> bitmap = new WeakReference<>(null);
 
-    public Picture(byte[] data) {
-        // generate new
-        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length);
-        Matrix mtx = new Matrix();
-        mtx.postRotate(90);
-        // Rotating Bitmap
-        b = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
-                b.getHeight(), mtx, true);
-        bitmap = new WeakReference<>(b);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.JPEG, 85, stream);
-        this.data = stream.toByteArray();
+    public Picture(byte[] jpegData, boolean rotate) {
+        if (rotate) {
+            // generate new
+            Bitmap b = BitmapFactory.decodeByteArray(jpegData, 0, jpegData.length);
+            Matrix mtx = new Matrix();
+            mtx.postRotate(90);
+            // Rotating Bitmap
+            b = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
+                    b.getHeight(), mtx, true);
+            bitmap = new WeakReference<>(b);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            b.compress(Bitmap.CompressFormat.JPEG, 85, stream);
+            this.data = stream.toByteArray();
+        } else {
+            this.data = jpegData;
+        }
     }
 
-    public byte[] getData() {
+    public byte[] getJpegData() {
         return data;
     }
 

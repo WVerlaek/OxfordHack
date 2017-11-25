@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ViewGroup;
 
 import com.microsoft.projectoxford.vision.contract.Tag;
@@ -35,7 +36,7 @@ public class TagDetector {
 
     private VisionAPI visionAPI;
 
-    private MutableLiveData<List<Tag>> mutableTags = new MutableLiveData<>();
+    private MutableLiveData<Pair<Picture, List<Tag>>> mutableTags = new MutableLiveData<>();
     private MutableLiveData<Throwable> mutableError = new MutableLiveData<>();
 
     private Timer timer = null;
@@ -80,7 +81,7 @@ public class TagDetector {
         }, POLL_RATE, POLL_RATE);
     }
 
-    public LiveData<List<Tag>> getDetectedTags() {
+    public LiveData<Pair<Picture, List<Tag>>> getDetectedTags() {
         return mutableTags;
     }
 
@@ -90,18 +91,20 @@ public class TagDetector {
 
     private void doAnalyze(Context context) {
         takePicture(picture -> {
-            visionAPI.getTagsAsync(context, picture, new ResultListener() {
-                @Override
-                public void onResult(VisionResult result) {
-                    mutableTags.setValue(result.getTags());
-                    mutableError.setValue(null);
-                }
+            if (picture != null) {
+                visionAPI.getTagsAsync(context, picture, new ResultListener() {
+                    @Override
+                    public void onResult(VisionResult result) {
+                        mutableTags.setValue(Pair.create(picture, result.getTags()));
+                        mutableError.setValue(null);
+                    }
 
-                @Override
-                public void onError(Exception e) {
-                    mutableError.setValue(e);
-                }
-            });
+                    @Override
+                    public void onError(Exception e) {
+                        mutableError.setValue(e);
+                    }
+                });
+            }
         });
     }
 
@@ -110,12 +113,21 @@ public class TagDetector {
             return;
         }
         takingPicture = true;
-        camera.takePicture(null, null, (bytes, camera1) -> {
-            takingPicture = false;
-            listener.onPicture(new Picture(bytes));
-            camera.stopPreview();
-            camera.startPreview();
-        });
+        Picture picture = preview.getPreviewPicture();
+        takingPicture = false;
+
+        listener.onPicture(picture);
+
+//        camera.takePicture(null, null, (bytes, camera1) -> {
+//            takingPicture = false;
+//            listener.onPicture(new Picture(bytes));
+//            camera.stopPreview();
+//            camera.startPreview();
+//        });
+    }
+
+    public Picture debugGetPreviewPicture() {
+        return preview.getPreviewPicture();
     }
 
     @Nullable
@@ -133,6 +145,6 @@ public class TagDetector {
 
     @FunctionalInterface
     public interface OnPictureListener {
-        void onPicture(Picture picture);
+        void onPicture(@Nullable Picture picture);
     }
 }

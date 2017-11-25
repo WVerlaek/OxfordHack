@@ -29,7 +29,7 @@
             android:name=".ui.activity.SelectActivity"
             android:label="@string/title_activity_select"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".ui.activity.ChallengeSelectActivity" />
         <activity android:name=".ui.activity.ChallengeActivity"></activity>
     </application>

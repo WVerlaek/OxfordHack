@@ -1,22 +1,30 @@
 package com.wverlaek.oxfordhack.ui.view;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.wverlaek.oxfordhack.vision.Picture;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by s148327 on 25-11-2017.
  */
 
-public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
+    private static final String TAG = "CameraPreview";
+
     private SurfaceHolder mHolder;
     private Camera mCamera;
 
-    private static final String TAG = "CameraPreview";
+    private byte[] previewBytes = null;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -65,11 +73,39 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // start preview with new settings
         try {
+//            Camera.Parameters p = mCamera.getParameters();
+//            p.setPreviewSize(600, 400); // todo get size of device
+//            mCamera.setParameters(p);
+
             mCamera.setPreviewDisplay(mHolder);
+            mCamera.setPreviewCallback(this);
             mCamera.startPreview();
 
         } catch (Exception e){
             Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
+    }
+
+
+    @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+        this.previewBytes = bytes;//Arrays.copyOf(bytes, bytes.length);
+    }
+
+    public Picture getPreviewPicture() {
+        Camera.Parameters p = mCamera.getParameters();
+        int width = p.getPreviewSize().width;
+        int height = p.getPreviewSize().height;
+        YuvImage yuv = new YuvImage(previewBytes, p.getPreviewFormat(), width, height, null);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        yuv.compressToJpeg(new Rect(0, 0, width, height), 80, out);
+
+        byte[] bytes = out.toByteArray();
+        return new Picture(bytes, true);
+    }
+
+    public byte[] getPreviewBytes() {
+        return previewBytes;
     }
 }

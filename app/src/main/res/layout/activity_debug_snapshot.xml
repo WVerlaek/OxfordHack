@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="A, B, C, D, E"
-        android:background="@color/colorWhite"
+        android:background="@color/white"
         android:textColor="@color/black87"
         android:textSize="18sp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"

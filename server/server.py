@@ -1,6 +1,8 @@
 import os
 import uuid
 import sqlite3
+import sqlalchemy
+import json
 from flask import Flask, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
@@ -16,7 +18,7 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(os.path.realpath(__file__)) + '/test.db'
 db = SQLAlchemy(app)
 
 challenge_tag = db.Table('challenge_tag', db.Model.metadata,
@@ -36,8 +38,15 @@ class Challenge(db.Model):
     __tablename__ = "challenge"
     id = db.Column(db.Integer, primary_key=True)
     picture = db.Column(db.String(256), unique=True)
+    name = db.Column(db.String(256))
     tags = db.relationship("Tag",
         secondary=challenge_tag)
+
+    def to_dict(self):
+        return {'id': self.id,
+                # 'file': open(app.config['UPLOAD_FOLDER'] + '/' + self.picture),
+                'name': self.name,
+                'tags': list(map(lambda t: t.name, self.tags))}
 
     def __repr__(self):
         return '<Challenge {}>'.format(self.tags)
@@ -47,7 +56,7 @@ def get_or_create(model, defaults=None, **kwargs):
     if instance:
         return instance, False
     else:
-        params = dict((k, v) for k, v in kwargs.iteritems() if not isinstance(v, ClauseElement))
+        params = dict((k, v) for k, v in kwargs.items() if not isinstance(v, sqlalchemy.sql.expression.ClauseElement))
         params.update(defaults or {})
         instance = model(**params)
         db.session.add(instance)
@@ -65,8 +74,9 @@ def allowed_file(filename):
 def upload_challenge():
     if request.method == 'POST':
         arg_tags = request.form.get('tags', None).split(',')
+        name = request.form.get('name', None)
         # all_tags = request.data.get('all_tags', None)
-        if 'file' not in request.files or not arg_tags:
+        if 'file' not in request.files or not arg_tags or not name:
             return 'missing data/arguments', 400 # oops
         file = request.files['file']
 
@@ -76,7 +86,7 @@ def upload_challenge():
         filename = str(uuid.uuid4())
         if file:
             filename = secure_filename(filename)
-            chal = Challenge(picture=filename)
+            chal = Challenge(picture=filename, name=name)
             for arg_tag in arg_tags:
                 tag, _ = get_or_create(Tag, name=arg_tag)
                 chal.tags.append(tag)
@@ -92,9 +102,13 @@ def upload_challenge():
     <h1>Upload new File</h1>
     <form method=post enctype=multipart/form-data>
       <p><input type=file name=file>
+         <input type=input name=name>
          <input type=submit value=Upload>
          <input type="hidden" name="tags" value="abc,de">
     </form>
     '''
 
-
+@app.route("/get/<name>")
+def get_challange(name):
+    chals = list(db.session.query(Challenge).filter(Challenge.name == name))
+    return json.dumps([chal.to_dict() for chal in chals])

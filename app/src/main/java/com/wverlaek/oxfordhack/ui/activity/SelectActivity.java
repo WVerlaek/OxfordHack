@@ -1,5 +1,6 @@
 package com.wverlaek.oxfordhack.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,7 +51,6 @@ public class SelectActivity extends AppCompatActivity {
 
         setTitle("I spy with my little eye on...");
 
-
         previewLayout = findViewById(R.id.camera);
         tagsLayout = findViewById(R.id.tags_layout);
         selectedTagLayout = findViewById(R.id.selected_tag);
@@ -69,6 +69,10 @@ public class SelectActivity extends AppCompatActivity {
         FloatingActionButton doneFab = findViewById(R.id.done_fab);
         doneFab.setOnClickListener(view -> {
             Toast.makeText(this, "Done! Selected tag: " + selectedTag.name, Toast.LENGTH_SHORT).show();
+            SearchFinishedActivity.setPicture(selectedPicture);
+            SearchFinishedActivity.setTag(selectedTag);
+            startActivity(new Intent(this, SearchFinishedActivity.class));
+            finish();
         });
 
         setSelectedTag(null, null);
@@ -89,8 +93,6 @@ public class SelectActivity extends AppCompatActivity {
 
         tagDetector.resume(this);
     }
-
-
 
     private void handleResult(@Nullable Pair<Picture, List<Tag>> pair) {
         List<Tag> tags = pair == null ? null : pair.second;

@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OxfordHack.iml" filepath="$PROJECT_DIR$/OxfordHack.iml" />
+      <module fileurl="file://C:\Users\notor\StudioProjects\OxfordHack\OxfordHack.iml" filepath="C:\Users\notor\StudioProjects\OxfordHack\OxfordHack.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\notor\StudioProjects\OxfordHack\app\app.iml" filepath="C:\Users\notor\StudioProjects\OxfordHack\app\app.iml" />
     </modules>
   </component>
 </project>

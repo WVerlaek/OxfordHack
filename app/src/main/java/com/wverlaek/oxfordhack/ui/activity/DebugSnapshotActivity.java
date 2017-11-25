@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.microsoft.projectoxford.vision.contract.Tag;
 import com.wverlaek.oxfordhack.R;
+import com.wverlaek.oxfordhack.util.TextUtil;
 import com.wverlaek.oxfordhack.vision.IVisionAPI;
 import com.wverlaek.oxfordhack.vision.Picture;
 import com.wverlaek.oxfordhack.vision.ResultListener;
@@ -30,6 +31,7 @@ public class DebugSnapshotActivity extends AppCompatActivity {
         setContentView(R.layout.activity_debug_snapshot);
 
         if (picture == null) {
+            Toast.makeText(this, "Debug activity needs a picture to start. Use setPicture(picture) first.", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -46,13 +48,13 @@ public class DebugSnapshotActivity extends AppCompatActivity {
                 List<Tag> tags = result.getTags();
                 StringBuilder sb = new StringBuilder();
                 for (Tag tag : tags) {
-                    sb.append(tag.name).append(", ");
+                    sb.append(tag.name).append(" ").append(TextUtil.formatDouble(tag.confidence)).append(", ");
                 }
                 tagsTextView.setText(sb.toString());
             }
 
             @Override
-            public void onError() {
+            public void onError(Exception e) {
                 Toast.makeText(DebugSnapshotActivity.this, "Error loading results from API", Toast.LENGTH_SHORT).show();
                 tagsTextView.setText("Error...");
             }

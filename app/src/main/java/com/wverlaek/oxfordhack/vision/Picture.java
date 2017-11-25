@@ -2,7 +2,9 @@ package com.wverlaek.oxfordhack.vision;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 
 /**
@@ -15,7 +17,17 @@ public class Picture {
     private WeakReference<Bitmap> bitmap = new WeakReference<>(null);
 
     public Picture(byte[] data) {
-        this.data = data;
+        // generate new
+        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length);
+        Matrix mtx = new Matrix();
+        mtx.postRotate(90);
+        // Rotating Bitmap
+        b = Bitmap.createBitmap(b, 0, 0, b.getWidth(),
+                b.getHeight(), mtx, true);
+        bitmap = new WeakReference<>(b);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 85, stream);
+        this.data = stream.toByteArray();
     }
 
     public byte[] getData() {

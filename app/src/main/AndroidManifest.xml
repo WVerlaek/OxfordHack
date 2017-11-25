@@ -30,7 +30,8 @@
             android:label="@string/title_activity_select"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.ChallengeSelectActivity"></activity>
+        <activity android:name=".ui.activity.ChallengeSelectActivity" />
+        <activity android:name=".ui.activity.ChallengeActivity"></activity>
     </application>
 
 </manifest>

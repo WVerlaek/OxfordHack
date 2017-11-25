@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int HAS_PERMISSION = 0;
     private static final int PERMISSION_REQUEST_STARTED = 1;
 
-    private Button selectModeButton;
+    private Button createChallengeButton;
+    private Button solveChallengeButton;
 
 
     @Override
@@ -30,10 +31,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        selectModeButton = findViewById(R.id.select_mode);
-        selectModeButton.setOnClickListener(view -> {
+        createChallengeButton = findViewById(R.id.create_challenge);
+        createChallengeButton.setOnClickListener(view -> {
             // start select mode activity
             startActivity(new Intent(this, SelectActivity.class));
+        });
+
+        solveChallengeButton = findViewById(R.id.solve_challenge);
+        solveChallengeButton.setOnClickListener(view -> {
+            startActivity(new Intent(this, ChallengeSelectActivity.class));
         });
 
         // request camera permission if needed

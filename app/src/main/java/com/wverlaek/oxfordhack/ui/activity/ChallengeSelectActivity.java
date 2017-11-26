@@ -9,8 +9,10 @@ import android.support.v7.app.ActionBar;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.wverlaek.oxfordhack.R;
 import com.wverlaek.oxfordhack.serverapi.Challenge;
@@ -19,17 +21,22 @@ import com.wverlaek.oxfordhack.serverapi.IServerAPI;
 import com.wverlaek.oxfordhack.serverapi.ServerAPI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChallengeSelectActivity extends AppCompatActivity {
+    // store as static, for demo purposes. This gets reset when app is restarted
     private static boolean showHints = true;
-    ListView simpleList;
 
-    IServerAPI serverAPI = new ServerAPI();
+    private IServerAPI serverAPI = new ServerAPI();
 
-    List<Challenge> challengeList = new ArrayList<>();
+    private List<Challenge> challengeList = new ArrayList<>();
+    private List<Challenge> offlineChallenges = Arrays.asList();
 
-    ArrayAdapter adapter;
+    private ListView simpleList;
+    private ArrayAdapter adapter;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,51 +50,60 @@ public class ChallengeSelectActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        simpleList = (ListView) findViewById(R.id.challengeSelectListView);
-        adapter = new ArrayAdapter<Challenge>(this, R.layout.challenge_item,
+        simpleList = findViewById(R.id.challengeSelectListView);
+
+        adapter = new ArrayAdapter<>(this, R.layout.challenge_item,
                 R.id.challengeTextView, challengeList);
         simpleList.setAdapter(adapter);
 
         simpleList.setOnItemClickListener((parent, view, position, id) -> {
-            Challenge t = challengeList.get(position);
-            startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, t.tag));
-            finish();
+            Challenge challenge = challengeList.get(position);
+            startChallenge(challenge);
         });
 
+        // load challenges
+        challengeList.addAll(offlineChallenges);
         serverAPI.getChallengesAsync(this, new GetResultListener() {
             @Override
             public void onResult(List<Challenge> result) {
+                challengeList.clear();
                 challengeList.addAll(result);
+                challengeList.addAll(offlineChallenges);
                 adapter.notifyDataSetChanged();
+
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(Exception e) {
                 new AlertDialog.Builder(ChallengeSelectActivity.this)
                         .setTitle("Error")
-                        .setMessage(e.getMessage())
+                        .setMessage("Failed to load challenges. Are you connected to the internet?")
                         .setPositiveButton("close", null)
-                        .setOnDismissListener(dialogInterface -> finish())
                         .show();
+
+                progressBar.setVisibility(View.GONE);
             }
         });
 
-        if (showHints) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        progressBar = findViewById(R.id.loading_bar);
+    }
 
-            builder.setTitle("Tips")
-                    .setMessage("1. Select one of the listed challenges.\n" +
-                            "2. Point the camera at objects relating to the challenge.\n" +
-                            "3. The app changes color to indicate you are getting close.\n" +
-                            "4. Select from the list which object you think it is.")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
-                        }
+    private void startChallenge(Challenge challenge) {
+        if (showHints) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Start challenge")
+                    .setMessage("Find the object in your area.\n\nYou will see a color change when you are getting close.\n\nMake your selection when you are confident you know which object is searched for.")
+                    .setPositiveButton("Start", (dialog, which) -> {
+                        startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, challenge.tag));
+                        finish();
                     })
-//                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+
             showHints = false;
+        } else {
+            startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, challenge.tag));
+            finish();
         }
     }
 }

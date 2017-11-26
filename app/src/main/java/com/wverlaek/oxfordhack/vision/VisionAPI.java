@@ -20,8 +20,6 @@ import java.io.IOException;
 public class VisionAPI implements IVisionAPI {
     private static final String TAG = "VisionAPI";
 
-    private final String apiRoot = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0";
-
     private final String[] visualFeatures = new String[] {"Tags"};
     private final String[] details = new String[] {};
 

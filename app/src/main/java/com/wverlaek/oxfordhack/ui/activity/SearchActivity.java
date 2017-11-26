@@ -39,6 +39,7 @@ public class SearchActivity extends AppCompatActivity {
     private TextView loadingText;
     private TextView selectedTagNameTextView;
     private Toolbar toolbar;
+    private TextView distHintTextView;
 
     // The tag name that the user needs to find
     private String targetName;
@@ -65,6 +66,7 @@ public class SearchActivity extends AppCompatActivity {
         selectedTagLayout = findViewById(R.id.selected_tag);
         selectedTagNameTextView = findViewById(R.id.selected_tag_name);
         loadingText = findViewById(R.id.loading_text);
+        distHintTextView = findViewById(R.id.dist_hint);
 
         tagDetector = new TagDetector(this, previewLayout);
 
@@ -96,6 +98,8 @@ public class SearchActivity extends AppCompatActivity {
 
         setSelectedTag(null);
         setIsLoading(true);
+
+        updateIndicator(COLD);
     }
 
 
@@ -146,12 +150,15 @@ public class SearchActivity extends AppCompatActivity {
         switch (status) {
             case WARM:
                 toolbar.setBackgroundResource(R.color.color_temp_warm);
+                distHintTextView.setText("It's here!");
                 break;
             case NEUTRAL:
-                toolbar.setBackgroundResource(R.color.color_temp_neutral);                
+                toolbar.setBackgroundResource(R.color.color_temp_neutral);
+                distHintTextView.setText("Close!");
                 break;
             case COLD:
                 toolbar.setBackgroundResource(R.color.color_temp_cold);
+                distHintTextView.setText("Not here!");
                 break;
         }
     }

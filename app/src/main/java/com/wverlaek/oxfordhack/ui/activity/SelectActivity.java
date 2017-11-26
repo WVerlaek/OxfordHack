@@ -49,7 +49,7 @@ public class SelectActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle("I spy with my little eye on...");
+        setTitle("I spy with my little eye ...");
 
         previewLayout = findViewById(R.id.camera);
         tagsLayout = findViewById(R.id.tags_layout);

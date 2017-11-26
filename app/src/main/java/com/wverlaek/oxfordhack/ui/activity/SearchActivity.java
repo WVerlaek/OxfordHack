@@ -87,10 +87,7 @@ public class SearchActivity extends AppCompatActivity {
                 //TODO: startActivity(new Intent(this, Successful.class));
                 //TODO: finish() denk ik
             } else {
-                //TODO: remove makeText
-                Toast.makeText(this, "Failed: " + selectedTag.name, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, SearchFailureActivity.class).putExtra(SearchFailureActivity.TARGET_TAG, selectedTag.name));
-                //TODO: startActivity(new Intent(this, HugeFailure.class));
             }
         });
 

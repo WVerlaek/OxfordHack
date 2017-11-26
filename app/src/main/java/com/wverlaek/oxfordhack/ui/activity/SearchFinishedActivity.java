@@ -49,20 +49,20 @@ public class SearchFinishedActivity extends AppCompatActivity {
             finish();
         });
 
-//        new ServerAPI().getPictureAsync(this, new GetPictureListener() {
-//            @Override
-//            public void onResult(Picture result) {
-////                Toast.makeText(SearchFinishedActivity.this, "Loaded",
+        new ServerAPI().getPictureAsync(this, new GetPictureListener() {
+            @Override
+            public void onResult(Picture result) {
+//                Toast.makeText(SearchFinishedActivity.this, "Loaded",
 //                        Toast.LENGTH_SHORT).show();
-//                snapshot.setImageBitmap(result.getBitmap());
-//            }
-//
-//            @Override
-//            public void onError(Exception e) {
-//                Toast.makeText(SearchFinishedActivity.this, "Unable to load picture",
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
+                snapshot.setImageBitmap(result.getBitmap());
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(SearchFinishedActivity.this, "Unable to load picture",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

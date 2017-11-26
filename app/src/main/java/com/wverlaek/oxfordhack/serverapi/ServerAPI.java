@@ -86,14 +86,13 @@ public class ServerAPI implements IServerAPI {
             @Override
             protected Picture doInBackground(Void... voids) {
                 Request request = new Request.Builder()
-                        .url(getUrl)
+                        .url(getPictureUrl + "1")
                         .build();
 
                 try {
                     Response response = client.newCall(request).execute();
                     if (response != null && response.code() == 200 && response.body() != null) {
-                            return null;
-//                        return new Picture(res, false);
+                        return new Picture(response.body().bytes(), false);
                     } else {
                         throw new IOException("Reponse code " + response.code() + " msg " +
                                 response.message());

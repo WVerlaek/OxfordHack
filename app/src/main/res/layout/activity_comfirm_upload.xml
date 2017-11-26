@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wverlaek.oxfordhack.ui.activity.ComfirmUploadActivity">
+    tools:context="com.wverlaek.oxfordhack.ui.activity.ConfirmUploadActivity">
 
 
     <FrameLayout android:id="@+id/upload_button_layout"
@@ -47,10 +47,18 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium"/>
 
             </LinearLayout>
         </LinearLayout>
+
+        <ProgressBar android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white50"/>
     </FrameLayout>
 
     <EditText
@@ -60,6 +68,9 @@
         android:inputType="text"
         android:layout_above="@id/upload_button_layout"
         android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:hint="Challenge name..."
         />
 
     <TextView android:id="@+id/name_challenge"
@@ -81,8 +92,11 @@
         tools:text="Tag"
         android:textColor="@color/black87"
         android:gravity="center"
+        android:padding="8dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
+        android:textSize="16sp"
+        android:elevation="2dp"
         />
 
     <ImageView android:id="@+id/snapshot_taken"

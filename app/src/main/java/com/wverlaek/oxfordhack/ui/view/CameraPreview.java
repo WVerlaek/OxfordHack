@@ -103,16 +103,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (previewBytes == null || destroyed) {
             return null;
         }
-        Camera.Parameters p = mCamera.getParameters();
-        int width = p.getPreviewSize().width;
-        int height = p.getPreviewSize().height;
-        YuvImage yuv = new YuvImage(previewBytes, p.getPreviewFormat(), width, height, null);
+        try {
+            Camera.Parameters p = mCamera.getParameters();
+            int width = p.getPreviewSize().width;
+            int height = p.getPreviewSize().height;
+            YuvImage yuv = new YuvImage(previewBytes, p.getPreviewFormat(), width, height, null);
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        yuv.compressToJpeg(new Rect(0, 0, width, height), 80, out);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            yuv.compressToJpeg(new Rect(0, 0, width, height), 80, out);
 
-        byte[] bytes = out.toByteArray();
-        return new Picture(bytes, true);
+            byte[] bytes = out.toByteArray();
+            return new Picture(bytes, true);
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Exception in getting preview picture", e);
+            return null;
+        }
     }
 
     public byte[] getPreviewBytes() {

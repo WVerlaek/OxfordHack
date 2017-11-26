@@ -3,6 +3,7 @@ package com.wverlaek.oxfordhack.ui.activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +37,7 @@ public class SearchActivity extends AppCompatActivity {
     private FrameLayout previewLayout;
     private LinearLayout tagsLayout;
     private LinearLayout selectedTagLayout;
-    private TextView loadingText;
+    private View loadingText;
     private TextView selectedTagNameTextView;
     private Toolbar toolbar;
     private TextView distHintTextView;
@@ -191,5 +192,14 @@ public class SearchActivity extends AppCompatActivity {
 
     private void setIsLoading(boolean loading) {
         loadingText.setVisibility(loading ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Quit challenge?")
+                .setPositiveButton("Quit", (dialog, which) -> super.onBackPressed())
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

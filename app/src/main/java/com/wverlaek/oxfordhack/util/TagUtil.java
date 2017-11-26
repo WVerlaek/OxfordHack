@@ -10,7 +10,8 @@ import java.util.Objects;
 
 public class TagUtil {
     // don't show these tags
-    private static final List<String> ignoredTags = Arrays.asList("abstract", "indoor", "sitting", "blur");
+    private static final List<String> ignoredTags = Arrays.asList(
+            "abstract", "indoor", "sitting", "blur", "open");
 
     /**
      * Filters a list of tags on confidence level and returns the resulting list.

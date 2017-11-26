@@ -16,7 +16,7 @@ public class SearchFailureActivity extends AppCompatActivity {
     public static final String SELECTED_TAG = "FAIL_SELECTED_TAG";
     public static final String TARGET_TAG = "FAIL_TARGET_TAG";
 
-    private ImageView snapshot;
+    private View tryAgainButton;
     private TextView tagCorrectView;
 
     @Override
@@ -27,16 +27,20 @@ public class SearchFailureActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        if (intent == null || !intent.hasExtra(TARGET_TAG) || !intent.hasExtra(SELECTED_TAG)) return;
+        if (intent == null || !intent.hasExtra(TARGET_TAG) || !intent.hasExtra(SELECTED_TAG)) {
+            finish();
+            return;
+        }
 
         String tagName = intent.getStringExtra(SELECTED_TAG);
         String targetTagName = intent.getStringExtra(TARGET_TAG);
 
         setTitle("");
 
-        snapshot = findViewById(R.id.snapshot);
-        snapshot.setOnClickListener(view -> {
-            startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, targetTagName));
+        tryAgainButton = findViewById(R.id.try_again);
+        tryAgainButton.setOnClickListener(view -> {
+            startActivity(new Intent(this, SearchActivity.class)
+                    .putExtra(SearchActivity.TARGET_TAG, targetTagName));
             finish();
         });
 

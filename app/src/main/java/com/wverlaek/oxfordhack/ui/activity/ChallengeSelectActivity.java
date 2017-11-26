@@ -31,7 +31,6 @@ public class ChallengeSelectActivity extends AppCompatActivity {
     private IServerAPI serverAPI = new ServerAPI();
 
     private List<Challenge> challengeList = new ArrayList<>();
-    private List<Challenge> offlineChallenges = Arrays.asList();
 
     private ListView simpleList;
     private ArrayAdapter adapter;
@@ -62,13 +61,11 @@ public class ChallengeSelectActivity extends AppCompatActivity {
         });
 
         // load challenges
-        challengeList.addAll(offlineChallenges);
         serverAPI.getChallengesAsync(this, new GetResultListener() {
             @Override
             public void onResult(List<Challenge> result) {
                 challengeList.clear();
                 challengeList.addAll(result);
-                challengeList.addAll(offlineChallenges);
                 adapter.notifyDataSetChanged();
 
                 progressBar.setVisibility(View.GONE);

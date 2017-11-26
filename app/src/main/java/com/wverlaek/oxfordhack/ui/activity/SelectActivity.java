@@ -37,7 +37,7 @@ public class SelectActivity extends AppCompatActivity {
     private FrameLayout previewLayout;
     private LinearLayout tagsLayout;
     private LinearLayout selectedTagLayout;
-    private TextView loadingText;
+    private View loadingText;
     private TextView selectedTagNameTextView;
     private TextView errorMessage;
 

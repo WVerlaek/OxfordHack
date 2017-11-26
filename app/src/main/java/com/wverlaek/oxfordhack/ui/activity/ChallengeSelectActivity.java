@@ -1,6 +1,8 @@
 package com.wverlaek.oxfordhack.ui.activity;
 
+
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.ActionBar;
@@ -47,7 +49,9 @@ public class ChallengeSelectActivity extends AppCompatActivity {
         simpleList.setAdapter(adapter);
 
         simpleList.setOnItemClickListener((parent, view, position, id) -> {
-
+            Challenge t = challengeList.get(position);
+            startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, t.tag));
+            finish();
         });
 
         serverAPI.getChallengesAsync(this, new GetResultListener() {

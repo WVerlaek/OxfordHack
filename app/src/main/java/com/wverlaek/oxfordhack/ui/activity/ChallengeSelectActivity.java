@@ -73,12 +73,8 @@ public class ChallengeSelectActivity extends AppCompatActivity {
         });
 
         if (showHints) {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-            } else {
-                builder = new AlertDialog.Builder(this);
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
             builder.setTitle("Tips")
                     .setMessage("1. Select one of the listed challenges.\n" +
                             "2. Point the camera at objects relating to the challenge.\n" +
@@ -89,7 +85,7 @@ public class ChallengeSelectActivity extends AppCompatActivity {
                             // continue with delete
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
             showHints = false;
         }

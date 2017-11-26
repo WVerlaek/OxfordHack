@@ -33,9 +33,14 @@
             android:parentActivityName=".ui.activity.MainActivity"/>
         <activity android:name=".ui.activity.ChallengeSelectActivity"
             android:parentActivityName=".ui.activity.MainActivity"/>
+        <activity android:name=".ui.activity.SearchActivity"
+            android:label="SearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"
+            android:parentActivityName=".ui.activity.ChallengeSelectActivity"/>
         <activity android:name=".ui.activity.SearchFinishedActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
+            android:theme="@style/AppTheme.FullScreen"/>
 
     </application>
 

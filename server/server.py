@@ -48,7 +48,7 @@ class Challenge(db.Model):
                 # 'file': open(app.config['UPLOAD_FOLDER'] + '/' + self.picture),
                 'picture': self.picture,
                 'name': self.name,
-                'tags': list(map(lambda t: t.name, self.tags))}
+                'tag': list(map(lambda t: t.name, self.tags))[0]} # Frontend expects a single tag
 
     def __repr__(self):
         return '<Challenge {}>'.format(self.tags)
@@ -75,7 +75,7 @@ def allowed_file(filename):
 @app.route("/upload", methods=['GET', 'POST'])
 def upload_challenge():
     if request.method == 'POST':
-        arg_tags = request.form.get('tags', None).split(',')
+        arg_tags = request.form.get('tag', None) # N.B. now a single arg
         name = request.form.get('name', None)
         # all_tags = request.data.get('all_tags', None)
         if 'file' not in request.files or not arg_tags or not name:
@@ -108,7 +108,7 @@ def upload_challenge():
       <p><input type=file name=file>
          <input type=input name=name>
          <input type=submit value=Upload>
-         <input type="hidden" name="tags" value="abc,de">
+         <input type="hidden" name="tag" value="abc">
     </form>
     '''
 

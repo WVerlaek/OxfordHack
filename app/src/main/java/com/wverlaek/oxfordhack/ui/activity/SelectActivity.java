@@ -84,11 +84,9 @@ public class SelectActivity extends AppCompatActivity {
                 Toast.makeText(this, "No picture found. Tag=" + selectedTag + " pic=" + selectedPicture, Toast.LENGTH_SHORT).show();
                 return;
             }
-            Intent intent = new Intent(this, SearchFinishedActivity.class);
-//            intent.putExtra(SearchFinishedActivity.KEY_TAG, selectedTag.name);
-//            intent.putExtra(SearchFinishedActivity.KEY_PICTURE, selectedPicture.getJpegData());
-            SearchFinishedActivity.setPicture(selectedPicture);
-            SearchFinishedActivity.setTag(selectedTag);
+            Intent intent = new Intent(this, ComfirmUploadActivity.class);
+            ComfirmUploadActivity.setPicture(selectedPicture);
+            ComfirmUploadActivity.setTag(selectedTag);
             startActivity(intent);
             finish();
         });

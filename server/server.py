@@ -132,5 +132,6 @@ def get_id(id):
 def get_picture(id):
     chal = db.session.query(Challenge).filter(Challenge.id == id).first()
     f = app.config['UPLOAD_FOLDER'] + '/' + chal.picture
-    return flask.send_file(f)
+    data = open(f, 'rb').read()
+    return json.dumps([int(d) for d in data])
 

@@ -151,15 +151,15 @@ public class SearchActivity extends AppCompatActivity {
         switch (status) {
             case WARM:
                 toolbar.setBackgroundResource(R.color.color_temp_warm);
-                distHintTextView.setText("It's here!");
+                distHintTextView.setText("Hot!");
                 break;
             case NEUTRAL:
                 toolbar.setBackgroundResource(R.color.color_temp_neutral);
-                distHintTextView.setText("Close!");
+                distHintTextView.setText("Warmer...");
                 break;
             case COLD:
                 toolbar.setBackgroundResource(R.color.color_temp_cold);
-                distHintTextView.setText("Not here!");
+                distHintTextView.setText("Cold!");
                 break;
         }
     }

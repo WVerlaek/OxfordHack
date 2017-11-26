@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.microsoft.projectoxford.vision.contract.Tag;
 import com.wverlaek.oxfordhack.R;
 import com.wverlaek.oxfordhack.serverapi.GetPictureListener;
 import com.wverlaek.oxfordhack.serverapi.ServerAPI;
@@ -18,7 +19,11 @@ import com.wverlaek.oxfordhack.vision.Picture;
 import java.util.Arrays;
 
 public class SearchFinishedActivity extends AppCompatActivity {
-    public static final String KEY_TAG = "SEARCH_SUCCESS_TAG";
+    public static final String TARGET_TAG = "SEARCH_SUCCESS_TAG";
+    public static final String TARGET_ID = "SEARCH_TARGET_ID";
+
+    private String targetName;
+    private int targetID;
 
     private ImageView snapshot;
     private TextView tagCorrectView;
@@ -28,9 +33,10 @@ public class SearchFinishedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        if (intent == null || !intent.hasExtra(KEY_TAG)) return;
+        if (intent == null || !intent.hasExtra(TARGET_TAG) || !intent.hasExtra(TARGET_ID)) return;
 
-        String tag = intent.getStringExtra(KEY_TAG);
+        targetName = intent.getStringExtra(TARGET_TAG);
+        targetID = intent.getIntExtra(TARGET_ID, -1);
 
         setContentView(R.layout.activity_search_finished);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -41,7 +47,7 @@ public class SearchFinishedActivity extends AppCompatActivity {
         snapshot = findViewById(R.id.snapshot);
 
         tagCorrectView = findViewById(R.id.tag_correct);
-        tagCorrectView.setText(TextUtil.capitalizeFirstLetter(tag));
+        tagCorrectView.setText(TextUtil.capitalizeFirstLetter(targetName));
 
         View mainMenuButton = findViewById(R.id.main_menu_button);
         mainMenuButton.setOnClickListener(view -> {
@@ -49,7 +55,7 @@ public class SearchFinishedActivity extends AppCompatActivity {
             finish();
         });
 
-        new ServerAPI().getPictureAsync(this, new GetPictureListener() {
+        new ServerAPI().getPictureAsync(targetID,this, new GetPictureListener() {
             @Override
             public void onResult(Picture result) {
 //                Toast.makeText(SearchFinishedActivity.this, "Loaded",

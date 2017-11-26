@@ -79,14 +79,14 @@ public class ServerAPI implements IServerAPI {
 
     @SuppressLint("StaticFieldLeak")
     @Override
-    public void getPictureAsync(Context context, GetPictureListener listener) {
+    public void getPictureAsync(int id, Context context, GetPictureListener listener) {
         new AsyncTask<Void, Void, Picture>() {
             private Exception exception = null;
 
             @Override
             protected Picture doInBackground(Void... voids) {
                 Request request = new Request.Builder()
-                        .url(getPictureUrl + "1")
+                        .url(getPictureUrl + id)
                         .build();
 
                 try {

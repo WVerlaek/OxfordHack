@@ -9,7 +9,7 @@ import android.content.Context;
 public interface IServerAPI {
     void getChallengesAsync(Context context, GetResultListener listener);
 
-    void getPictureAsync(Context context, GetPictureListener listener);
+    void getPictureAsync(int id, Context context, GetPictureListener listener);
 
     void postChallengeAsync(Context context, Challenge challenge, PostResultListener listener);
 }

@@ -92,7 +92,9 @@ public class ChallengeSelectActivity extends AppCompatActivity {
                     .setTitle("Start challenge")
                     .setMessage("Find the object in your area.\n\nYou will see a color change when you are getting close.\n\nMake your selection when you are confident you know which object is searched for.")
                     .setPositiveButton("Start", (dialog, which) -> {
-                        startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, challenge.tag));
+                        startActivity(new Intent(this, SearchActivity.class)
+                                .putExtra(SearchActivity.TARGET_TAG, challenge.tag)
+                                .putExtra(SearchActivity.TARGET_ID, challenge.id));
                         finish();
                     })
                     .show();

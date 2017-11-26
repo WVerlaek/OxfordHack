@@ -85,7 +85,7 @@ public class SelectActivity extends AppCompatActivity {
                 return;
             }
             Intent intent = new Intent(this, ConfirmUploadActivity.class);
-//            intent.putExtra(SearchFinishedActivity.KEY_TAG, selectedTag.name);
+//            intent.putExtra(SearchFinishedActivity.TARGET_TAG, selectedTag.name);
 //            intent.putExtra(SearchFinishedActivity.KEY_PICTURE, selectedPicture.getJpegData());
             ConfirmUploadActivity.setPicture(selectedPicture);
             ConfirmUploadActivity.setTag(selectedTag.name);

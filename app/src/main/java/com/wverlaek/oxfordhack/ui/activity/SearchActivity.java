@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.microsoft.projectoxford.vision.contract.Tag;
 import com.wverlaek.oxfordhack.R;
@@ -28,6 +27,7 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
     public static final String TARGET_TAG = "SEARCH_TARGET_TAG";
+    public static final String TARGET_ID = "SEARCH_TARGET_ID";
     private static final String TAG = "SearchActivity";
     private static final int COLD = 0;
     private static final int NEUTRAL = 1;
@@ -44,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
 
     // The tag name that the user needs to find
     private String targetName;
+    private int targetID;
     // The currently selected tag
     private Tag selectedTag;
 
@@ -52,9 +53,10 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        if (intent == null || !intent.hasExtra(TARGET_TAG)) return;
+        if (intent == null || !intent.hasExtra(TARGET_TAG) || !intent.hasExtra(TARGET_ID)) return;
 
         targetName = intent.getStringExtra(TARGET_TAG);
+        targetID = intent.getIntExtra(TARGET_ID, -1);
 
         setContentView(R.layout.activity_search);
         toolbar = findViewById(R.id.toolbar);
@@ -86,7 +88,8 @@ public class SearchActivity extends AppCompatActivity {
         doneFab.setOnClickListener(view -> {
             if (selectedTag.name.equalsIgnoreCase(targetName)) {
                 startActivity(new Intent(this, SearchFinishedActivity.class)
-                        .putExtra(SearchFinishedActivity.KEY_TAG, targetName));
+                        .putExtra(SearchFinishedActivity.TARGET_ID, targetID)
+                        .putExtra(SearchFinishedActivity.TARGET_TAG, targetName));
                 finish();
             } else {
                 startActivity(new Intent(this, SearchFailureActivity.class)

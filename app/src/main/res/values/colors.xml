@@ -23,4 +23,5 @@
     <color name="color_temp_warm">@color/colorAccent</color>
 
     <color name="transparent">#00000000</color>
+    <color name="divider">#1F000000</color>
 </resources>

@@ -29,8 +29,10 @@
             android:name=".ui.activity.SelectActivity"
             android:label="@string/title_activity_select"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
-        <activity android:name=".ui.activity.ChallengeSelectActivity" />
+            android:theme="@style/AppTheme.FullScreen"
+            android:parentActivityName=".ui.activity.MainActivity"/>
+        <activity android:name=".ui.activity.ChallengeSelectActivity"
+            android:parentActivityName=".ui.activity.MainActivity"/>
         <activity android:name=".ui.activity.SearchFinishedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />

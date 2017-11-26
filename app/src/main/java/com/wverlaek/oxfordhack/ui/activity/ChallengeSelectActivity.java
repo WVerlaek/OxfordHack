@@ -1,5 +1,6 @@
 package com.wverlaek.oxfordhack.ui.activity;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ public class ChallengeSelectActivity extends AppCompatActivity {
 
     IServerAPI serverAPI = new ServerAPI();
 
-    ArrayList<Challenge> challengeList = new ArrayList<>();
+    List<Challenge> challengeList = new ArrayList<>();
 
     ArrayAdapter adapter;
 
@@ -28,6 +29,14 @@ public class ChallengeSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_select);
+
+        setTitle("Choose a challenge");
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         simpleList = (ListView) findViewById(R.id.challengeSelectListView);
         adapter = new ArrayAdapter<Challenge>(this, R.layout.challenge_item,
                 R.id.challengeTextView, challengeList);

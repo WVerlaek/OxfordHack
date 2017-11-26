@@ -27,6 +27,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private byte[] previewBytes = null;
 
+    private boolean destroyed = true;
+
     public CameraPreview(Context context, Camera camera) {
         super(context);
         mCamera = camera;
@@ -47,10 +49,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } catch (IOException e) {
             Log.d(TAG, "Error setting camera preview: " + e.getMessage());
         }
+
+        destroyed = false;
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         // empty. Take care of releasing the Camera preview in your activity.
+        destroyed = true;
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
@@ -95,7 +100,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Nullable
     public Picture getPreviewPicture() {
-        if (previewBytes == null) {
+        if (previewBytes == null || destroyed) {
             return null;
         }
         Camera.Parameters p = mCamera.getParameters();

@@ -3,6 +3,7 @@ import uuid
 import sqlite3
 import sqlalchemy
 import json
+import flask
 from flask import Flask, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
@@ -130,5 +131,8 @@ def get_id(id):
 @app.route("/get/picture/<id>")
 def get_picture(id):
     chal = db.session.query(Challenge).filter(Challenge.id == id).first()
-    return open(app.config['UPLOAD_FOLDER'] + '/' + chal.picture, 'rb').read()
+    out = open(app.config['UPLOAD_FOLDER'] + '/' + chal.picture, 'rb').read()
+    resp = flask.Response(out)
+    resp.headers['Content-Length'] = len(out)
+    return resp
     # return json.dumps([chal.to_dict() for chal in chals])

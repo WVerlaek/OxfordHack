@@ -3,11 +3,15 @@ package com.wverlaek.oxfordhack.util;
 import com.microsoft.projectoxford.vision.contract.Tag;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class TagUtil {
+    // don't show these tags
+    private static final List<String> ignoredTags = Arrays.asList("abstract", "indoor", "sitting", "blur");
+
     /**
      * Filters a list of tags on confidence level and returns the resulting list.
      */
@@ -15,6 +19,9 @@ public class TagUtil {
         List<Tag> result = new ArrayList<>();
         if (tags != null) {
             for (Tag tag : tags) {
+                if (ignoredTags.contains(tag.name)) {
+                    continue;
+                }
                 if (tag.confidence >= minConfidence) {
                     result.add(tag);
                 }

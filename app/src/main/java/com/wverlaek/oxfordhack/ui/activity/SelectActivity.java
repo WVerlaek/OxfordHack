@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.microsoft.projectoxford.vision.contract.Tag;
 import com.wverlaek.oxfordhack.R;
 import com.wverlaek.oxfordhack.util.Constants;
+import com.wverlaek.oxfordhack.util.TagUtil;
 import com.wverlaek.oxfordhack.util.TextUtil;
 import com.wverlaek.oxfordhack.vision.Picture;
 import com.wverlaek.oxfordhack.vision.TagDetector;
@@ -117,14 +118,14 @@ public class SelectActivity extends AppCompatActivity {
 
         if (tags != null) {
             setIsLoading(false);
-            tags = filterTags(tags, Constants.MIN_TAG_CONFIDENCE_SELECT);
+            tags = TagUtil.filter(tags, Constants.MIN_TAG_CONFIDENCE_SELECT);
             setTags(pic, tags);
         }
     }
 
     private void setTags(Picture picture, List<Tag> tags) {
-        // sort on confidence
-        Collections.sort(tags, (tag, t1) -> -Double.compare(tag.confidence, t1.confidence));
+        // sort on confidence decreasing order
+        TagUtil.sort(tags);
 
         tagsLayout.removeAllViews();
 
@@ -140,25 +141,6 @@ public class SelectActivity extends AppCompatActivity {
 
             tagsLayout.addView(tagView);
         }
-
-    }
-
-    // don't show these tags
-    private List<String> ignoredTags = Arrays.asList("abstract", "indoor", "sitting", "blur");
-
-    private List<Tag> filterTags(List<Tag> tags, double minConfidence) {
-        List<Tag> result = new ArrayList<>();
-        if (tags != null) {
-            for (Tag tag : tags) {
-                if (ignoredTags.contains(tag.name)) {
-                    continue;
-                }
-                if (tag.confidence >= minConfidence) {
-                    result.add(tag);
-                }
-            }
-        }
-        return result;
     }
 
     private void setSelectedTag(Tag tag, Picture picture) {

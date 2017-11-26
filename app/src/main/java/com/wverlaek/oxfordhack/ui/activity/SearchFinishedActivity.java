@@ -24,7 +24,10 @@ import java.util.List;
 
 public class SearchFinishedActivity extends AppCompatActivity {
     private static Picture picture = null;
-    private static Tag tag = null;
+    private static String tag = null;
+
+    public static final String KEY_TAG = "key_tag";
+    public static final String KEY_PICTURE = "key_picture";
 
     private ImageView snapshot;
     private TextView tagCorrectView;
@@ -38,8 +41,16 @@ public class SearchFinishedActivity extends AppCompatActivity {
 
         setTitle("");
 
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        if (extras != null) {
+//            tag = extras.getString(KEY_TAG, null);
+//            byte[] bytes = intent.hasExtra(KEY_PICTURE) ? extras.getByteArray(KEY_PICTURE) : null;
+//            picture = bytes == null ? null : new Picture(bytes, false);
+//        }
+
         if (picture == null || tag == null) {
-            Toast.makeText(this, "Search activity needs a picture to start. Use setPicture(picture) first.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Search activity needs a picture to start. Use setPicture(picture) first. tag=" + tag + " pic=" + picture, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -48,7 +59,7 @@ public class SearchFinishedActivity extends AppCompatActivity {
         snapshot.setImageBitmap(picture.getBitmap());
 
         tagCorrectView = findViewById(R.id.tag_correct);
-        tagCorrectView.setText(TextUtil.capitalizeFirstLetter(tag.name));
+        tagCorrectView.setText(TextUtil.capitalizeFirstLetter(tag));
 
         View mainMenuButton = findViewById(R.id.main_menu_button);
         mainMenuButton.setOnClickListener(view -> {
@@ -62,6 +73,6 @@ public class SearchFinishedActivity extends AppCompatActivity {
     }
 
     public static void setTag(Tag tag) {
-        SearchFinishedActivity.tag = tag;
+        SearchFinishedActivity.tag = tag.name;
     }
 }

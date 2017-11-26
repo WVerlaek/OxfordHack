@@ -79,10 +79,16 @@ public class SelectActivity extends AppCompatActivity {
 
         FloatingActionButton doneFab = findViewById(R.id.done_fab);
         doneFab.setOnClickListener(view -> {
-            Toast.makeText(this, "Done! Selected tag: " + selectedTag.name, Toast.LENGTH_SHORT).show();
+            if (selectedPicture == null || selectedTag == null) {
+                Toast.makeText(this, "No picture found. Tag=" + selectedTag + " pic=" + selectedPicture, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(this, SearchFinishedActivity.class);
+//            intent.putExtra(SearchFinishedActivity.KEY_TAG, selectedTag.name);
+//            intent.putExtra(SearchFinishedActivity.KEY_PICTURE, selectedPicture.getJpegData());
             SearchFinishedActivity.setPicture(selectedPicture);
             SearchFinishedActivity.setTag(selectedTag);
-            startActivity(new Intent(this, SearchFinishedActivity.class));
+            startActivity(intent);
             finish();
         });
 
@@ -156,11 +162,12 @@ public class SelectActivity extends AppCompatActivity {
     }
 
     private void setSelectedTag(Tag tag, Picture picture) {
-        this.selectedTag = tag;
-        this.selectedPicture = picture;
-
         if (tag != null) {
             selectedTagNameTextView.setText(TextUtil.capitalizeFirstLetter(tag.name));
+
+            // only update when non null
+            this.selectedTag = tag;
+            this.selectedPicture = picture;
         }
 
         selectedTagLayout.setVisibility(tag == null ? View.GONE : View.VISIBLE);

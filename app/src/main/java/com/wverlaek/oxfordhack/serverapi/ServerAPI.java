@@ -89,7 +89,7 @@ public class ServerAPI implements IServerAPI {
                         .addFormDataPart("file", "newfile.jpeg",
                                 RequestBody.create(MEDIA_TYPE_PLAINTEXT, challenge.file))
                         .addFormDataPart("name", challenge.name)
-                        .addFormDataPart("tags", challenge.tag)
+                        .addFormDataPart("tag", challenge.tag)
                         .build();
 
                 Request request = new Request.Builder()

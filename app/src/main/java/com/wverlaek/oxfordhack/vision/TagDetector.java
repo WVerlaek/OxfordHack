@@ -55,6 +55,9 @@ public class TagDetector {
 
     public void pause() {
         if (camera != null) {
+//            preview.getHolder().removeCallback(preview);
+//            camera.stopPreview();
+            camera.setPreviewCallback(null);
             camera.release();
             camera = null;
         }

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -51,6 +52,13 @@ public class SelectActivity extends AppCompatActivity {
 
         setTitle("I spy with my little eye ...");
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+
         previewLayout = findViewById(R.id.camera);
         tagsLayout = findViewById(R.id.tags_layout);
         selectedTagLayout = findViewById(R.id.selected_tag);
@@ -63,7 +71,10 @@ public class SelectActivity extends AppCompatActivity {
         tagDetector.getDetectedTags().observe(this, this::handleResult);
         tagDetector.getError().observe(this, throwable -> {
             errorMessage.setVisibility(throwable == null ? View.GONE : View.VISIBLE);
-            Log.e(TAG, "Error in tag detector", throwable);
+
+            if (throwable != null) {
+                Log.e(TAG, "Error in tag detector", throwable);
+            }
         });
 
         FloatingActionButton doneFab = findViewById(R.id.done_fab);

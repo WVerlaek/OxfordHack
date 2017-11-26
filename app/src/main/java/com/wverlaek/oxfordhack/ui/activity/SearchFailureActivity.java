@@ -13,7 +13,8 @@ import com.wverlaek.oxfordhack.R;
 import com.wverlaek.oxfordhack.util.TextUtil;
 
 public class SearchFailureActivity extends AppCompatActivity {
-    public static final String TARGET_TAG = "SEARCH_TARGET_TAG";
+    public static final String SELECTED_TAG = "FAIL_SELECTED_TAG";
+    public static final String TARGET_TAG = "FAIL_TARGET_TAG";
 
     private ImageView snapshot;
     private TextView tagCorrectView;
@@ -26,14 +27,16 @@ public class SearchFailureActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        if (intent == null || !intent.hasExtra(TARGET_TAG)) return;
+        if (intent == null || !intent.hasExtra(TARGET_TAG) || !intent.hasExtra(SELECTED_TAG)) return;
 
-        String tagName = intent.getStringExtra(TARGET_TAG);
+        String tagName = intent.getStringExtra(SELECTED_TAG);
+        String targetTagName = intent.getStringExtra(TARGET_TAG);
 
         setTitle("");
 
         snapshot = findViewById(R.id.snapshot);
         snapshot.setOnClickListener(view -> {
+            startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, targetTagName));
             finish();
         });
 

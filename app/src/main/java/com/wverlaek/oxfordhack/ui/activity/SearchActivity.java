@@ -87,7 +87,10 @@ public class SearchActivity extends AppCompatActivity {
                 //TODO: startActivity(new Intent(this, Successful.class));
                 //TODO: finish() denk ik
             } else {
-                startActivity(new Intent(this, SearchFailureActivity.class).putExtra(SearchFailureActivity.TARGET_TAG, selectedTag.name));
+                startActivity(new Intent(this, SearchFailureActivity.class)
+                        .putExtra(SearchFailureActivity.TARGET_TAG, targetName)
+                        .putExtra(SearchFailureActivity.SELECTED_TAG, selectedTag.name));
+                finish();
             }
         });
 

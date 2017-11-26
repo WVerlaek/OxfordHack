@@ -1,7 +1,10 @@
 package com.wverlaek.oxfordhack.ui.activity;
 
-import android.support.v7.app.ActionBar;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.ActionBar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChallengeSelectActivity extends AppCompatActivity {
+    private static boolean showHints = true;
     ListView simpleList;
 
     IServerAPI serverAPI = new ServerAPI();
@@ -63,5 +67,27 @@ public class ChallengeSelectActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+        if (showHints) {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Tips")
+                    .setMessage("1. Select one of the listed challenges.\n" +
+                            "2. Point the camera at objects relating to the challenge.\n" +
+                            "3. The app changes color to indicate you are getting close.\n" +
+                            "4. Select from the list which object you think it is.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            showHints = false;
+        }
     }
 }

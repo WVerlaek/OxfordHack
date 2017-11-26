@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +17,7 @@ import com.wverlaek.oxfordhack.R;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
 
     private int permissionRequestCode = 123;
 

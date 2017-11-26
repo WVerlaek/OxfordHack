@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/activity_search_finished">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wverlaek.oxfordhack.ui.activity.ComfirmUploadActivity">
 
-    <FrameLayout android:id="@+id/main_menu_layout"
+
+    <FrameLayout android:id="@+id/upload_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/colorAccent">
-        <LinearLayout android:id="@+id/main_menu_button"
+        <LinearLayout android:id="@+id/confirm_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -34,13 +35,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_home_black_24dp"
+                    android:src="@drawable/ic_file_upload_white_24dp"
                     android:tint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MAIN MENU"
+                    android:text="UPLOAD"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:paddingTop="8dp"
@@ -52,27 +53,48 @@
         </LinearLayout>
     </FrameLayout>
 
+    <EditText
+        android:id="@+id/name_input"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="text"
+        android:layout_above="@id/upload_button_layout"
+        android:layout_marginBottom="10dp"
+        />
 
-    <TextView android:id="@+id/label_image"
+    <TextView android:id="@+id/name_challenge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Original picture"
+        android:text="Name your challenge:"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_centerHorizontal="true"
         android:textColor="@color/colorPrimaryDark"
         android:fontFamily="sans-serif-medium"
-        android:layout_above="@id/main_menu_layout"
-        android:layout_marginBottom="48dp"
+        android:layout_above="@id/name_input"
+        android:layout_marginBottom="10dp"
         />
 
+    <TextView android:id="@+id/tag_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tag_bg"
+        tools:text="Tag"
+        android:textColor="@color/black87"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        />
 
-    <ImageView android:id="@+id/snapshot"
+    <ImageView android:id="@+id/snapshot_taken"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@color/black54"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="32dp"
-        android:layout_above="@id/label_image"/>
+        android:layout_marginTop="16dp"
+        android:layout_above="@id/name_challenge"
+        android:layout_below="@id/tag_selected"
+        />
+
 
 </RelativeLayout>

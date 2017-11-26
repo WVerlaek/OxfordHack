@@ -93,6 +93,7 @@ public class SearchActivity extends AppCompatActivity {
                 finish();
             } else {
                 startActivity(new Intent(this, SearchFailureActivity.class)
+                        .putExtra(SearchFailureActivity.TARGET_ID, targetID)
                         .putExtra(SearchFailureActivity.TARGET_TAG, targetName)
                         .putExtra(SearchFailureActivity.SELECTED_TAG, selectedTag.name));
                 finish();

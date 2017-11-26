@@ -101,7 +101,9 @@ public class ChallengeSelectActivity extends AppCompatActivity {
 
             showHints = false;
         } else {
-            startActivity(new Intent(this, SearchActivity.class).putExtra(SearchActivity.TARGET_TAG, challenge.tag));
+            startActivity(new Intent(this, SearchActivity.class)
+                    .putExtra(SearchActivity.TARGET_TAG, challenge.tag)
+                    .putExtra(SearchActivity.TARGET_ID, challenge.id));
             finish();
         }
     }

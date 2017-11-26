@@ -15,6 +15,10 @@ import com.wverlaek.oxfordhack.util.TextUtil;
 public class SearchFailureActivity extends AppCompatActivity {
     public static final String SELECTED_TAG = "FAIL_SELECTED_TAG";
     public static final String TARGET_TAG = "FAIL_TARGET_TAG";
+    public static final String TARGET_ID = "FAIL_TARGET_ID";
+
+    private String targetName;
+    private int targetID;
 
     private View tryAgainButton;
     private TextView tagCorrectView;
@@ -27,20 +31,22 @@ public class SearchFailureActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        if (intent == null || !intent.hasExtra(TARGET_TAG) || !intent.hasExtra(SELECTED_TAG)) {
+        if (intent == null || !intent.hasExtra(TARGET_TAG) || !intent.hasExtra(SELECTED_TAG) || !intent.hasExtra(TARGET_ID)) {
             finish();
             return;
         }
 
         String tagName = intent.getStringExtra(SELECTED_TAG);
-        String targetTagName = intent.getStringExtra(TARGET_TAG);
+        targetName = intent.getStringExtra(TARGET_TAG);
+        targetID = intent.getIntExtra(TARGET_ID, -1);
 
         setTitle("");
 
         tryAgainButton = findViewById(R.id.try_again);
         tryAgainButton.setOnClickListener(view -> {
             startActivity(new Intent(this, SearchActivity.class)
-                    .putExtra(SearchActivity.TARGET_TAG, targetTagName));
+                    .putExtra(SearchActivity.TARGET_ID, targetID)
+                    .putExtra(SearchActivity.TARGET_TAG, targetName));
             finish();
         });
 

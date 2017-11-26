@@ -8,8 +8,14 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.wverlaek.oxfordhack.util.TextUtil;
+import com.wverlaek.oxfordhack.vision.Picture;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -18,6 +24,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.BufferedSource;
 
 /**
  * Created by notor on 11/25/2017.
@@ -25,6 +32,7 @@ import okhttp3.Response;
 
 public class ServerAPI implements IServerAPI {
     private final String getUrl = "http://178.62.27.128/get/all";
+    private final String getPictureUrl = "http://178.62.27.128/get/picture/";
     private final String postUrl = "http://178.62.27.128/upload";
 
     OkHttpClient client = new OkHttpClient();
@@ -69,7 +77,44 @@ public class ServerAPI implements IServerAPI {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void getPictureAsync(Context context, GetPictureListener listener) {
+        new AsyncTask<Void, Void, Picture>() {
+            private Exception exception = null;
 
+            @Override
+            protected Picture doInBackground(Void... voids) {
+                Request request = new Request.Builder()
+                        .url(getUrl)
+                        .build();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    if (response != null && response.code() == 200 && response.body() != null) {
+                            return null;
+//                        return new Picture(res, false);
+                    } else {
+                        throw new IOException("Reponse code " + response.code() + " msg " +
+                                response.message());
+                    }
+                } catch (IOException ioE) {
+                    exception = ioE;
+                    Log.e("ServerAPI", "Get request failed", ioE);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Picture result) {
+                if (result == null) {
+                    listener.onError(exception);
+                } else {
+                    listener.onResult(result);
+                }
+            }
+        }.execute();
+    }
 
     @SuppressLint("StaticFieldLeak")
     @Override

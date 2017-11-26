@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 /**
@@ -16,7 +17,15 @@ public class Picture {
 
     private WeakReference<Bitmap> bitmap = new WeakReference<>(null);
 
-    public Picture(byte[] jpegData, boolean rotate) {
+//    public Picture(InputStream byteStream) {
+//        Bitmap b = BitmapFactory.decodeStream(byteStream);
+//        bitmap = new WeakReference<Bitmap>(b);
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        b.compress(Bitmap.CompressFormat.JPEG, 85, stream);
+//        this.data = stream.toByteArray();
+//    }
+
+    public  Picture(byte[] jpegData, boolean rotate) {
         if (rotate) {
             // generate new
             Bitmap b = BitmapFactory.decodeByteArray(jpegData, 0, jpegData.length);

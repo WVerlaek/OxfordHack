@@ -84,10 +84,9 @@ public class SearchActivity extends AppCompatActivity {
         FloatingActionButton doneFab = findViewById(R.id.done_fab);
         doneFab.setOnClickListener(view -> {
             if (selectedTag.name.equalsIgnoreCase(targetName)) {
-                //TODO: remove makeText
-                Toast.makeText(this, "Success: " + selectedTag.name, Toast.LENGTH_SHORT).show();
-                //TODO: startActivity(new Intent(this, Successful.class));
-                //TODO: finish() denk ik
+                startActivity(new Intent(this, SearchFinishedActivity.class)
+                        .putExtra(SearchFinishedActivity.KEY_TAG, targetName));
+                finish();
             } else {
                 startActivity(new Intent(this, SearchFailureActivity.class)
                         .putExtra(SearchFailureActivity.TARGET_TAG, targetName)
@@ -119,8 +118,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private void handleResult(@Nullable Pair<Picture, List<Tag>> pair) {
         if (pair == null) return;
-        // als tag zit in de lijst, maar onder confidence_threshold -> close
-        // als confidence >= confidence_threshold
         List<Tag> tags = pair.second;
 
         if (tags != null) {

@@ -76,7 +76,7 @@ def allowed_file(filename):
 @app.route("/upload", methods=['GET', 'POST'])
 def upload_challenge():
     if request.method == 'POST':
-        arg_tags = request.form.get('tag', None) # N.B. now a single arg
+        arg_tags = [request.form.get('tag', None)] # N.B. now a single arg
         name = request.form.get('name', None)
         # all_tags = request.data.get('all_tags', None)
         if 'file' not in request.files or not arg_tags or not name:
@@ -131,8 +131,6 @@ def get_id(id):
 @app.route("/get/picture/<id>")
 def get_picture(id):
     chal = db.session.query(Challenge).filter(Challenge.id == id).first()
-    out = open(app.config['UPLOAD_FOLDER'] + '/' + chal.picture, 'rb').read()
-    resp = flask.Response(out)
-    resp.headers['Content-Length'] = len(out)
-    return resp
-    # return json.dumps([chal.to_dict() for chal in chals])
+    f = app.config['UPLOAD_FOLDER'] + '/' + chal.picture
+    return flask.send_file(f)
+
